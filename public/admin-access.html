@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Access - YouTube Transcript Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            text-align: center;
+            padding: 30px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .admin-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .back-btn {
+            color: #3498db;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .email-highlight {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .steps {
+            text-align: left;
+            margin: 20px 0 30px;
+        }
+        
+        .steps li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+            color: #34495e;
+        }
+        
+        .dashboard-preview {
+            max-width: 100%;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard Access</h1>
+        <p>Welcome to the admin access page. This page provides direct access to the admin dashboard for the YouTube Transcript Converter application.</p>
+        
+        <p>Your account (<span class="email-highlight">ashfaqvishu@gmail.com</span>) has been granted administrator privileges. Click the button below to access the dashboard.</p>
+        
+        <a href="/admin/dashboard.html" class="admin-btn">Go to Admin Dashboard</a>
+        
+        <p>If the dashboard link doesn't appear in the navigation bar, follow these steps:</p>
+        
+        <ol class="steps">
+            <li>Visit the <a href="/admin/direct-admin.html">direct admin setup page</a> to ensure your admin status is properly configured</li>
+            <li>After successful setup, refresh the main page to see the dashboard link</li>
+            <li>If you still don't see the link, log out and log back in with your credentials</li>
+        </ol>
+        
+        <p>From the dashboard, you can monitor user activity, manage contact submissions, and track system statistics.</p>
+        
+        <a href="/" class="back-btn">← Back to Home Page</a>
+    </div>
+    
+    <script>
+        // Check if the user is ashfaqvishu@gmail.com
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/auth/user', {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success || !data.user) {
+                    // Not logged in
+                    alert('Please log in with your admin account (ashfaqvishu@gmail.com) to access the dashboard.');
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                // Make sure the user is the specific admin
+                if (data.user.email !== 'ashfaqvishu@gmail.com') {
+                    alert('This admin dashboard is only accessible with the authorized admin account (ashfaqvishu@gmail.com).');
+                    window.location.href = '/';
+                    return;
+                }
+                
+                // If user is admin but status isn't set, update it
+                if (!data.user.isAdmin) {
+                    fetch('/api/admin/force-update', {
+                        method: 'GET',
+                        credentials: 'include'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Admin status updated:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error updating admin status:', error);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error checking authentication:', error);
+            });
+        });
+    </script>
+</body>
+</html> 

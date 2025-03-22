@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Setup - YouTube Transcript Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .setup-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .admin-logo {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .admin-logo img {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .admin-logo h1 {
+            font-size: 24px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .admin-logo p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .setup-form {
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #34495e;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .submit-button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .message.error {
+            background-color: #fdeaea;
+            color: #e74c3c;
+            border: 1px solid #fadbd8;
+        }
+        
+        .message.success {
+            background-color: #eafaf1;
+            color: #27ae60;
+            border: 1px solid #d5f5e3;
+        }
+        
+        .message.info {
+            background-color: #eaf2f8;
+            color: #3498db;
+            border: 1px solid #d4e6f1;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .instructions {
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .instructions p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .instructions li {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .instructions .highlight {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="admin-logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="Admin Logo">
+            <h1>Admin Setup</h1>
+            <p>Create your first admin account</p>
+        </div>
+        
+        <div class="instructions">
+            <h3>One-Time Setup Process</h3>
+            <p>This page allows you to convert an existing user account to an admin account. You'll need:</p>
+            <ul>
+                <li>The email and password of an existing user account</li>
+                <li>The admin secret code (default: <span class="highlight">youtube-transcript-admin-secret</span>)</li>
+            </ul>
+            <p>After setup, you will be logged in and redirected to the admin dashboard.</p>
+            <p class="highlight">Important: This setup page should be disabled after the first admin is created!</p>
+        </div>
+        
+        <form id="setup-form" class="setup-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your account email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your account password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="admin-secret">Admin Secret</label>
+                <input type="password" id="admin-secret" name="adminSecret" placeholder="Enter the admin secret code" required>
+            </div>
+            
+            <button type="submit" id="submit-button" class="submit-button">
+                Create Admin Account
+            </button>
+        </form>
+        
+        <div id="message" class="message" style="display: none;"></div>
+        
+        <a href="/" class="back-link">← Back to Website</a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('setup-form');
+            const submitButton = document.getElementById('submit-button');
+            const messageDiv = document.getElementById('message');
+            
+            // Check if admin setup is needed
+            checkAdminSetup();
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Reset message
+                messageDiv.style.display = 'none';
+                
+                // Get form data
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const adminSecret = document.getElementById('admin-secret').value;
+                
+                // Disable button and show loading state
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="loading"></span> Setting up admin...';
+                
+                // Send setup request
+                fetch('/api/admin/make-admin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password, adminSecret })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showMessage('success', 'Admin account created successfully! Redirecting to dashboard...');
+                        
+                        // Redirect to admin dashboard after delay
+                        setTimeout(() => {
+                            window.location.href = '/admin/dashboard.html';
+                        }, 2000);
+                    } else {
+                        throw new Error(data.message || 'Failed to create admin account');
+                    }
+                })
+                .catch(error => {
+                    console.error('Setup error:', error);
+                    showMessage('error', error.message || 'An error occurred. Please try again.');
+                    
+                    // Reset button state
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Create Admin Account';
+                });
+            });
+            
+            // Function to check if admin setup is needed
+            function checkAdminSetup() {
+                fetch('/api/admin/list', {
+                    method: 'GET',
+                    credentials: 'include'
+                })
+                .then(response => {
+                    // If we can access the admin list, admins already exist
+                    if (response.ok) {
+                        return response.json().then(data => {
+                            if (data.success && data.admins && data.admins.length > 0) {
+                                showMessage('info', 'Admin accounts already exist. Please use the login page instead.');
+                                form.style.display = 'none';
+                                
+                                // Add login link
+                                const loginLink = document.createElement('a');
+                                loginLink.href = '/admin/login.html';
+                                loginLink.className = 'submit-button';
+                                loginLink.style.display = 'block';
+                                loginLink.style.textDecoration = 'none';
+                                loginLink.style.marginTop = '20px';
+                                loginLink.style.textAlign = 'center';
+                                loginLink.textContent = 'Go to Login Page';
+                                
+                                document.querySelector('.setup-container').insertBefore(
+                                    loginLink, 
+                                    document.querySelector('.back-link')
+                                );
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    // If error, probably no admins yet, which is expected
+                    console.log('Admin setup may be needed:', error);
+                });
+            }
+            
+            // Function to show messages
+            function showMessage(type, text) {
+                messageDiv.className = `message ${type}`;
+                messageDiv.textContent = text;
+                messageDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 

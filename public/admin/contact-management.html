@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Management - Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Additional styles for admin dashboard */
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+        
+        .admin-logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-logo img {
+            width: 32px;
+            margin-right: 10px;
+        }
+        
+        .admin-menu {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .admin-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-menu a {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .admin-menu a:hover {
+            background-color: #34495e;
+        }
+        
+        .admin-menu a.active {
+            background-color: #3498db;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-title {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .contact-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .contact-filters {
+            display: flex;
+            gap: 15px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .search-form {
+            margin-left: auto;
+            display: flex;
+        }
+        
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+        
+        .search-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .contact-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .contact-table th,
+        .contact-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .contact-table th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+        
+        .contact-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-new {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+        
+        .status-in-progress {
+            background-color: #fff8e1;
+            color: #ffc107;
+        }
+        
+        .status-resolved {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .status-closed {
+            background-color: #f5f5f5;
+            color: #9e9e9e;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-button {
+            background-color: #f5f5f5;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .action-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .view-button {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+        
+        .view-button:hover {
+            background-color: #bbdefb;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .page-button {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .page-button.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .contact-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .contact-modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            margin: 0;
+            font-size: 20px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .contact-detail {
+            margin-bottom: 20px;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .message-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-line;
+        }
+        
+        .status-form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .form-row {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .update-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .update-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="Logo">
+                <span>Admin Panel</span>
+            </div>
+            
+            <ul class="admin-menu">
+                <li><a href="/admin/dashboard.html">Dashboard</a></li>
+                <li><a href="/admin/users.html">User Management</a></li>
+                <li><a href="/admin/contact-management.html" class="active">Contact Messages</a></li>
+                <li><a href="/admin/settings.html">Settings</a></li>
+                <li><a href="/" target="_blank">View Website</a></li>
+                <li><a href="#" id="logout-link">Logout</a></li>
+            </ul>
+        </aside>
+        
+        <main class="admin-content">
+            <header class="admin-header">
+                <h1 class="page-title">Contact Messages</h1>
+                
+                <div class="admin-user">
+                    <img src="https://via.placeholder.com/40" alt="Admin User">
+                    <span>Admin User</span>
+                </div>
+            </header>
+            
+            <div class="contact-list">
+                <div class="contact-filters">
+                    <select class="filter-select" id="status-filter">
+                        <option value="">All Statuses</option>
+                        <option value="new">New</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                    
+                    <select class="filter-select" id="subject-filter">
+                        <option value="">All Subjects</option>
+                        <option value="general">General Inquiry</option>
+                        <option value="support">Technical Support</option>
+                        <option value="billing">Billing Question</option>
+                        <option value="feature">Feature Request</option>
+                        <option value="bug">Report a Bug</option>
+                    </select>
+                    
+                    <form class="search-form">
+                        <input type="text" class="search-input" placeholder="Search..." id="search-input">
+                        <button type="submit" class="search-button">Search</button>
+                    </form>
+                </div>
+                
+                <table class="contact-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contact-tbody">
+                        <!-- Contact records will be loaded here via JavaScript -->
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 30px;">Loading contact submissions...</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="pagination" id="pagination">
+                    <!-- Pagination controls will be added here -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Contact Detail Modal -->
+    <div class="contact-modal" id="contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Contact Details</h2>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Contact details will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Admin authentication check
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAdminAuth();
+            loadContactSubmissions();
+            
+            // Set up event listeners
+            document.getElementById('close-modal').addEventListener('click', function() {
+                document.getElementById('contact-modal').classList.remove('show');
+            });
+            
+            document.getElementById('logout-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                logout();
+            });
+            
+            // Filter event listeners
+            document.getElementById('status-filter').addEventListener('change', function() {
+                loadContactSubmissions();
+            });
+            
+            document.getElementById('subject-filter').addEventListener('change', function() {
+                loadContactSubmissions();
+            });
+            
+            // Search form
+            document.querySelector('.search-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                loadContactSubmissions();
+            });
+        });
+        
+        // Check if user is logged in as admin
+        async function checkAdminAuth() {
+            try {
+                const response = await fetch('/api/auth/admin-check', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success || !data.isAdmin) {
+                    // Redirect to login if not admin
+                    window.location.href = '/admin/login.html';
+                }
+            } catch (error) {
+                console.error('Error checking admin auth:', error);
+                window.location.href = '/admin/login.html';
+            }
+        }
+        
+        // Logout function
+        async function logout() {
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                window.location.href = '/admin/login.html';
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+        
+        // Load contact submissions with pagination and filters
+        async function loadContactSubmissions(page = 1) {
+            try {
+                const statusFilter = document.getElementById('status-filter').value;
+                const subjectFilter = document.getElementById('subject-filter').value;
+                const searchQuery = document.getElementById('search-input').value;
+                
+                const response = await fetch(`/api/admin/contacts?page=${page}&status=${statusFilter}&subject=${subjectFilter}&search=${searchQuery}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to load contact submissions');
+                }
+                
+                renderContactTable(data.contacts);
+                renderPagination(data.currentPage, data.totalPages);
+            } catch (error) {
+                console.error('Error loading contacts:', error);
+                document.getElementById('contact-tbody').innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px; color: #f44336;">
+                            Failed to load contact submissions. Please try again.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Render contact table
+        function renderContactTable(contacts) {
+            const tbody = document.getElementById('contact-tbody');
+            
+            if (!contacts || contacts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px;">
+                            No contact submissions found.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = contacts.map(contact => `
+                <tr>
+                    <td>${formatDate(contact.createdAt)}</td>
+                    <td>${escapeHtml(contact.name)}</td>
+                    <td>${escapeHtml(contact.email)}</td>
+                    <td>${formatSubject(contact.subject)}</td>
+                    <td>
+                        <span class="status-badge status-${contact.status}">
+                            ${formatStatus(contact.status)}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-button view-button" onclick="viewContactDetails('${contact._id}')">
+                                View
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Render pagination controls
+        function renderPagination(currentPage, totalPages) {
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHtml = '';
+            
+            // Previous button
+            if (currentPage > 1) {
+                paginationHtml += `
+                    <button class="page-button" onclick="loadContactSubmissions(${currentPage - 1})">
+                        &laquo;
+                    </button>
+                `;
+            }
+            
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, startPage + 4);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHtml += `
+                    <button class="page-button ${i === currentPage ? 'active' : ''}" onclick="loadContactSubmissions(${i})">
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            // Next button
+            if (currentPage < totalPages) {
+                paginationHtml += `
+                    <button class="page-button" onclick="loadContactSubmissions(${currentPage + 1})">
+                        &raquo;
+                    </button>
+                `;
+            }
+            
+            pagination.innerHTML = paginationHtml;
+        }
+        
+        // View contact details
+        async function viewContactDetails(contactId) {
+            try {
+                const response = await fetch(`/api/admin/contacts/${contactId}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to load contact details');
+                }
+                
+                const contact = data.contact;
+                
+                // Render contact details in modal
+                document.getElementById('modal-body').innerHTML = `
+                    <div class="contact-detail">
+                        <div class="detail-label">Reference ID:</div>
+                        <div>${contact._id}</div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <div class="detail-label">Date Submitted:</div>
+                        <div>${formatDate(contact.createdAt)}</div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <div class="detail-label">Name:</div>
+                        <div>${escapeHtml(contact.name)}</div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <div class="detail-label">Email:</div>
+                        <div>${escapeHtml(contact.email)}</div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <div class="detail-label">Subject:</div>
+                        <div>${formatSubject(contact.subject)}</div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <div class="detail-label">Message:</div>
+                        <div class="message-content">${escapeHtml(contact.message)}</div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <div class="detail-label">Status:</div>
+                        <div>
+                            <span class="status-badge status-${contact.status}">
+                                ${formatStatus(contact.status)}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <form class="status-form" id="status-form">
+                        <input type="hidden" id="contact-id" value="${contact._id}">
+                        
+                        <div class="form-row">
+                            <label class="form-label" for="status">Update Status:</label>
+                            <select class="form-select" id="status">
+                                <option value="new" ${contact.status === 'new' ? 'selected' : ''}>New</option>
+                                <option value="in-progress" ${contact.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="resolved" ${contact.status === 'resolved' ? 'selected' : ''}>Resolved</option>
+                                <option value="closed" ${contact.status === 'closed' ? 'selected' : ''}>Closed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-row">
+                            <label class="form-label" for="notes">Internal Notes:</label>
+                            <textarea class="form-textarea" id="notes">${contact.notes || ''}</textarea>
+                        </div>
+                        
+                        <button type="submit" class="update-button">Update Contact</button>
+                    </form>
+                `;
+                
+                // Set up form submission
+                document.getElementById('status-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    updateContactStatus();
+                });
+                
+                // Show modal
+                document.getElementById('contact-modal').classList.add('show');
+            } catch (error) {
+                console.error('Error loading contact details:', error);
+                alert('Failed to load contact details. Please try again.');
+            }
+        }
+        
+        // Update contact status
+        async function updateContactStatus() {
+            try {
+                const contactId = document.getElementById('contact-id').value;
+                const status = document.getElementById('status').value;
+                const notes = document.getElementById('notes').value;
+                
+                const response = await fetch(`/api/admin/contacts/${contactId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ status, notes })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to update contact status');
+                }
+                
+                // Close modal and reload contacts
+                document.getElementById('contact-modal').classList.remove('show');
+                loadContactSubmissions();
+                
+                // Show success notification
+                alert('Contact updated successfully.');
+            } catch (error) {
+                console.error('Error updating contact status:', error);
+                alert('Failed to update contact status. Please try again.');
+            }
+        }
+        
+        // Helper functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+        
+        function formatSubject(subject) {
+            const subjectMap = {
+                'general': 'General Inquiry',
+                'support': 'Technical Support',
+                'billing': 'Billing Question',
+                'feature': 'Feature Request',
+                'bug': 'Bug Report'
+            };
+            
+            return subjectMap[subject] || subject;
+        }
+        
+        function formatStatus(status) {
+            const statusMap = {
+                'new': 'New',
+                'in-progress': 'In Progress',
+                'resolved': 'Resolved',
+                'closed': 'Closed'
+            };
+            
+            return statusMap[status] || status;
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Transcript Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube Icon">
+            <div class="logo-text">YT<span>Transcript</span></div>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#converter">Converter</a></li>
+            <li><a href="#how-it-works">How it Works</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+        
+        <div class="auth-buttons">
+            <!-- Auth buttons will be dynamically inserted here by JS -->
+        </div>
+        
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Transform YouTube Videos into Text Instantly</h1>
+            <p>Get accurate transcripts from any YouTube video with just one click. Save time, improve accessibility, and repurpose content effortlessly.</p>
+            
+            <div class="converter-box" id="converter">
+                <h2>Enter YouTube URL</h2>
+                <div class="url-input-container">
+                    <input type="text" id="youtube-url" placeholder="https://www.youtube.com/watch?v=..." />
+                    <button id="convert-btn">Convert to Text</button>
+                </div>
+                <p class="disclaimer">Free up to 10 minutes of video length. <a href="#pricing">Upgrade</a> for longer videos.</p>
+            </div>
+            
+            <div class="results-container" id="results">
+                <div class="loading-spinner" id="loading">
+                    <div class="spinner"></div>
+                    <p>Converting your video to text...</p>
+                </div>
+                <div class="transcript-results" id="transcript-box">
+                    <div class="transcript-header">
+                        <h3 id="video-title">Video Title</h3>
+                        <div class="transcript-actions">
+                            <button id="copy-btn">Copy All</button>
+                            <button id="download-btn">Download</button>
+                        </div>
+                    </div>
+                    <div class="transcript-content" id="transcript-content">
+                        <!-- Transcript will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-features">
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Get your transcript in seconds</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔍</div>
+                <h3>Highly Accurate</h3>
+                <p>Powered by advanced AI</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <h3>Any Device</h3>
+                <p>Works on desktop and mobile</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-description">Get your YouTube video transcript in three simple steps</p>
+            
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">🔗</div>
+                    <h3>Paste YouTube URL</h3>
+                    <p>Copy the URL of any YouTube video and paste it into our converter box.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">⚙️</div>
+                    <h3>Process Video</h3>
+                    <p>Our advanced AI analyzes the video's audio and converts speech to text with high accuracy.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">📝</div>
+                    <h3>Get Transcript</h3>
+                    <p>Within seconds, you'll receive a time-stamped transcript that you can copy, download, or edit.</p>
+                </div>
+            </div>
+            
+            <div class="features-details">
+                <div class="feature-detail">
+                    <h3>🎯 Accurate Timestamps</h3>
+                    <p>Each line of text is synchronized with the video timeline, making it easy to navigate long videos.</p>
+                </div>
+                
+                <div class="feature-detail">
+                    <h3>🌐 Multiple Languages</h3>
+                    <p>Support for transcription in over 30 languages with automatic language detection.</p>
+                </div>
+                
+                <div class="feature-detail">
+                    <h3>🔒 Secure & Private</h3>
+                    <p>Your data remains private - we don't store video content after processing is complete.</p>
+                </div>
+                
+                <div class="feature-detail">
+                    <h3>⚡ Fast Processing</h3>
+                    <p>Even long videos are processed quickly, with most transcripts ready in under a minute.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Profile Section (visible only when logged in) -->
+    <section class="user-profile" id="profile" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">My Profile</h2>
+            <p class="section-description">Manage your account and view your transcript history</p>
+            
+            <div class="profile-content">
+                <div class="user-info">
+                    <h3>Account Information</h3>
+                    <div class="user-details">
+                        <p><strong>Username:</strong> <span id="profile-username"></span></p>
+                        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+                        <p><strong>Member Since:</strong> <span id="profile-joined"></span></p>
+                    </div>
+                </div>
+                
+                <div class="transcript-history">
+                    <h3>Recent Transcripts</h3>
+                    <div class="history-list" id="history-list">
+                        <!-- Transcript history will be added here -->
+                        <p class="no-history">No transcripts yet. Start converting videos to build your history.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p class="section-description">Choose the plan that fits your needs</p>
+            
+            <div class="pricing-plans">
+                <div class="pricing-plan">
+                    <div class="plan-badge">Free</div>
+                    <h3 class="plan-name">Basic</h3>
+                    <div class="plan-price">$0<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>✅ Videos up to 10 minutes</li>
+                        <li>✅ 5 transcripts per day</li>
+                        <li>✅ Basic text formatting</li>
+                        <li>✅ Download as TXT</li>
+                        <li>❌ No timestamps</li>
+                        <li>❌ No language translation</li>
+                    </ul>
+                    <button class="plan-button free">Get Started</button>
+                </div>
+                
+                <div class="pricing-plan popular">
+                    <div class="plan-badge">Popular</div>
+                    <h3 class="plan-name">Pro</h3>
+                    <div class="plan-price">$9.99<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>✅ Videos up to 2 hours</li>
+                        <li>✅ 50 transcripts per day</li>
+                        <li>✅ Advanced text formatting</li>
+                        <li>✅ Download as TXT, SRT, VTT</li>
+                        <li>✅ Timestamp support</li>
+                        <li>✅ 5 language translations</li>
+                    </ul>
+                    <button class="plan-button">Start 7-Day Free Trial</button>
+                </div>
+                
+                <div class="pricing-plan">
+                    <div class="plan-badge">Enterprise</div>
+                    <h3 class="plan-name">Business</h3>
+                    <div class="plan-price">$29.99<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>✅ Unlimited video length</li>
+                        <li>✅ Unlimited transcripts</li>
+                        <li>✅ Advanced text formatting</li>
+                        <li>✅ All download formats</li>
+                        <li>✅ Advanced timestamp control</li>
+                        <li>✅ 30+ language translations</li>
+                    </ul>
+                    <button class="plan-button">Contact Sales</button>
+                </div>
+            </div>
+            
+            <div class="pricing-guarantee">
+                <div class="guarantee-icon">🔒</div>
+                <p>All plans include a <strong>14-day money-back guarantee</strong>. No questions asked.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-description">Find answers to common questions about our service</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How accurate are the transcripts?</h3>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our transcription technology achieves over 95% accuracy for videos with clear audio. Factors like background noise, accents, and technical terminology may affect accuracy. Our Pro and Business plans include human review options for maximum accuracy.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Which languages do you support?</h3>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our Basic plan supports English transcription. Pro plan adds support for Spanish, French, German, Italian, and Portuguese. Business plan supports over 30 languages including Japanese, Chinese, Korean, Arabic, and many European languages.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How long does it take to generate a transcript?</h3>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Most transcripts are ready within minutes. A 10-minute video typically takes less than 1 minute to process. Longer videos on the Pro and Business plans may take 5-10 minutes. Processing time depends on video length and server load.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I edit the transcript after it's generated?</h3>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, Pro and Business plans include an online editor where you can refine the transcript, adjust timestamps, and correct any errors. Basic plan allows copying the text to edit in your own application.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Is my data secure?</h3>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, all video processing happens on secure servers. We don't store video content after processing is complete, and transcripts are only accessible to you. Business plans include additional security features like encrypted storage and custom retention policies.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I cancel my subscription anytime?</h3>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely. You can cancel your subscription at any time through your account settings. We also offer a 14-day money-back guarantee if you're not satisfied with the service.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <p>Still have questions? <a href="#" class="contact-link">Contact our support team</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <div class="logo-text">YT<span>Transcript</span></div>
+                    <p>Convert YouTube videos to text instantly.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#converter">Converter</a></li>
+                            <li><a href="#how-it-works">How it Works</a></li>
+                            <li><a href="#pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="#faq">FAQ</a></li>
+                            <li><a href="/help-center.html">Help Center</a></li>
+                            <li><a href="/contact.html">Contact Us</a></li>
+                            <li><a href="/api-docs.html">API Documentation</a></li>
+                            <li><a href="/admin-access.html" id="admin-access-link" style="display: none;">Admin Access</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                            <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                            <li><a href="#">GDPR Compliance</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 YTTranscript. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">Twitter</a>
+                    <a href="#" class="social-link">Facebook</a>
+                    <a href="#" class="social-link">LinkedIn</a>
+                    <a href="#" class="social-link">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent" class="cookie-consent" style="display: none;">
+        <p>We use cookies to enhance your experience on our website. By continuing to use our site, you consent to our use of cookies. Learn more in our <a href="/cookie-policy.html">Cookie Policy</a>.</p>
+        <div class="cookie-buttons">
+            <button id="reject-cookies" class="cookie-btn reject-cookies">Reject All</button>
+            <button id="accept-cookies" class="cookie-btn accept-cookies">Accept All</button>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Access Button (Only visible for ashfaqvishu@gmail.com) -->
+    <div id="admin-quick-access" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;">
+        <a href="/admin/dashboard.html" style="display: block; background-color: #e74c3c; color: white; padding: 15px; border-radius: 50%; text-decoration: none; box-shadow: 0 4px 8px rgba(0,0,0,0.2); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px;">A</a>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check for admin user and show admin access
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/auth/user', {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.user && data.user.email === 'ashfaqvishu@gmail.com') {
+                    // Show quick access button for admin
+                    document.getElementById('admin-quick-access').style.display = 'block';
+                    document.getElementById('admin-access-link').style.display = 'block';
+                    
+                    // Force update admin status in backend
+                    fetch('/api/admin/force-update', {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error checking user:', error);
+            });
+        });
+
+        // Listen for messages from admin pages
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'refreshAdminStatus') {
+                console.log('Refreshing admin status');
+                // Clear navbar and rebuild it
+                const navbarRight = document.querySelector('.navbar-nav');
+                if (navbarRight) {
+                    navbarRight.innerHTML = '';
+                    updateUIForLoggedInUser();
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

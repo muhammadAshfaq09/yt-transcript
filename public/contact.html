@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - YouTube Transcript Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube Icon">
+            <div class="logo-text">YT<span>Transcript</span></div>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/#converter">Converter</a></li>
+            <li><a href="/#how-it-works">How it Works</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+        </ul>
+        
+        <div class="auth-buttons">
+            <!-- Auth buttons will be dynamically inserted here by JS -->
+        </div>
+        
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <section class="contact-page">
+        <div class="container">
+            <h1 class="page-title">Contact Us</h1>
+            <p class="page-description">We're here to help with any questions or issues you might have</p>
+            
+            <div class="contact-grid">
+                <div class="contact-form-container">
+                    <h2>Get in Touch</h2>
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject" name="subject" required>
+                                <option value="" disabled selected>Select a topic</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="billing">Billing Question</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="bug">Report a Bug</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" rows="6" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="contact-submit">Send Message</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info-container">
+                    <div class="contact-card">
+                        <div class="contact-icon">📧</div>
+                        <h3>Email Support</h3>
+                        <p>For general inquiries and support:</p>
+                        <a href="mailto:support@yttranscript.com" class="contact-link">support@yttranscript.com</a>
+                        <p>For business and partnership inquiries:</p>
+                        <a href="mailto:business@yttranscript.com" class="contact-link">business@yttranscript.com</a>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">⏱️</div>
+                        <h3>Support Hours</h3>
+                        <p>Our team is available:</p>
+                        <p class="hours">Monday - Friday: 9am - 8pm EST</p>
+                        <p class="hours">Saturday: 10am - 6pm EST</p>
+                        <p class="hours">Sunday: Closed</p>
+                        <p>We typically respond to all inquiries within 24 hours.</p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">🌐</div>
+                        <h3>Social Media</h3>
+                        <p>Connect with us on social media:</p>
+                        <div class="social-links contact-social">
+                            <a href="#" class="social-link">Twitter</a>
+                            <a href="#" class="social-link">Facebook</a>
+                            <a href="#" class="social-link">LinkedIn</a>
+                            <a href="#" class="social-link">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-preview">
+                <h2>Frequently Asked Questions</h2>
+                <p>Looking for a quick answer? Our <a href="/#faq">FAQ section</a> might have what you need.</p>
+                <p>For more detailed assistance, check out our <a href="/help-center.html">Help Center</a>.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <div class="logo-text">YT<span>Transcript</span></div>
+                    <p>Convert YouTube videos to text instantly.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/#converter">Converter</a></li>
+                            <li><a href="/#how-it-works">How it Works</a></li>
+                            <li><a href="/#pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="/#faq">FAQ</a></li>
+                            <li><a href="/help-center.html">Help Center</a></li>
+                            <li><a href="/contact.html">Contact Us</a></li>
+                            <li><a href="/api-docs.html">API Documentation</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                            <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                            <li><a href="#">GDPR Compliance</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 YTTranscript. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">Twitter</a>
+                    <a href="#" class="social-link">Facebook</a>
+                    <a href="#" class="social-link">LinkedIn</a>
+                    <a href="#" class="social-link">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent" class="cookie-consent" style="display: none;">
+        <p>We use cookies to enhance your experience on our website. By continuing to use our site, you consent to our use of cookies. Learn more in our <a href="/cookie-policy.html">Cookie Policy</a>.</p>
+        <div class="cookie-buttons">
+            <button id="reject-cookies" class="cookie-btn reject-cookies">Reject All</button>
+            <button id="accept-cookies" class="cookie-btn accept-cookies">Accept All</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Contact form submission handler
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            // Disable form during submission
+            const submitButton = document.querySelector('.contact-submit');
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            
+            // Send data to API endpoint
+            fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include', // Include cookies for authentication
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear form immediately
+                    document.getElementById('contact-form').reset();
+                    
+                    // Show success message
+                    showNotification(data.message || 'Your message has been sent successfully!', 'success');
+                    
+                    // Display reference ID if provided
+                    if (data.referenceId) {
+                        const successInfo = document.createElement('div');
+                        successInfo.className = 'form-success-info';
+                        successInfo.innerHTML = `
+                            <strong>Thank you for contacting us!</strong><br>
+                            Your reference ID: <strong>${data.referenceId}</strong><br>
+                            Please save this ID for future reference about your inquiry.
+                        `;
+                        
+                        // Find a good place to insert the message - at the top of the form
+                        const form = document.getElementById('contact-form');
+                        form.insertBefore(successInfo, form.firstChild);
+                        
+                        // Scroll to the success message
+                        successInfo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        // Remove after 15 seconds
+                        setTimeout(() => {
+                            successInfo.classList.add('fade-out');
+                            setTimeout(() => {
+                                successInfo.remove();
+                            }, 500);
+                        }, 15000);
+                    }
+                } else {
+                    // Show error message
+                    showNotification(data.message || 'Failed to send message. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                showNotification('Network error. Please check your connection and try again.', 'error');
+            })
+            .finally(() => {
+                // Re-enable the form
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+            });
+        });
+        
+        // Custom notification function (used if script.js is not loaded)
+        function showNotification(message, type) {
+            // Check if the function already exists in the global scope (from script.js)
+            if (window.showNotification && typeof window.showNotification === 'function') {
+                window.showNotification(message, type);
+                return;
+            }
+            
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.contact-notification');
+            existingNotifications.forEach(notification => {
+                notification.remove();
+            });
+            
+            // Create a simple notification if the global function doesn't exist
+            const notification = document.createElement('div');
+            notification.className = `contact-notification ${type}`;
+            notification.textContent = message;
+            
+            // Add close button
+            const closeBtn = document.createElement('span');
+            closeBtn.className = 'notification-close';
+            closeBtn.innerHTML = '&times;';
+            closeBtn.addEventListener('click', () => {
+                notification.classList.add('fade-out');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            });
+            
+            notification.appendChild(closeBtn);
+            document.body.appendChild(notification);
+            
+            // Show with animation
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 5000);
+        }
+    </script>
+    <style>
+        /* Additional styles for contact form notifications */
+        .contact-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            background-color: #333;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            min-width: 300px;
+            max-width: 80%;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .contact-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .contact-notification.fade-out {
+            transform: translateY(100px);
+            opacity: 0;
+        }
+        
+        .contact-notification.success {
+            background-color: #4CAF50;
+        }
+        
+        .contact-notification.error {
+            background-color: #f44336;
+        }
+        
+        .notification-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        
+        .notification-close:hover {
+            opacity: 1;
+        }
+        
+        .form-success-info {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 0 0 20px 0;
+            border-radius: 0 4px 4px 0;
+            animation: fadeIn 0.5s ease-in-out;
+            transition: opacity 0.5s ease;
+        }
+        
+        .form-success-info.fade-out {
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</body>
+</html> 

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Access - YouTube Transcript Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .access-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .admin-logo {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .admin-logo img {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .admin-logo h1 {
+            font-size: 24px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .admin-logo p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .message {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .message.info {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+        }
+        
+        .message.success {
+            background-color: #e8f5e9;
+            color: #4caf50;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .message.error {
+            background-color: #ffebee;
+            color: #f44336;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: #3498db;
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .action-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+        
+        .action-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .dashboard-icon {
+            font-size: 64px;
+            margin: 20px 0;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="access-container">
+        <div class="admin-logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="Admin Logo">
+            <h1>Admin Access</h1>
+            <p>Direct Administrator Access</p>
+        </div>
+        
+        <div id="status-message" class="message info">
+            <p>Please wait while we verify your account...</p>
+        </div>
+        
+        <div id="loading" class="loading-spinner"></div>
+        
+        <div id="actions" style="display: none;">
+            <div class="dashboard-icon">🔑</div>
+            <a href="/admin/dashboard.html" class="action-button">Go to Dashboard</a>
+            <a href="/" class="action-button" style="background-color: #95a5a6; margin-left: 10px;">Back to Home</a>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusMessage = document.getElementById('status-message');
+            const loadingSpinner = document.getElementById('loading');
+            const actionsDiv = document.getElementById('actions');
+            
+            // Function to show message
+            function showMessage(type, message) {
+                statusMessage.className = `message ${type}`;
+                statusMessage.innerHTML = `<p>${message}</p>`;
+            }
+            
+            // Check if user is logged in
+            fetch('/api/auth/user', {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success || !data.user) {
+                    showMessage('error', 'You must be logged in to access the admin panel. Please <a href="/login.html">login</a> first.');
+                    loadingSpinner.style.display = 'none';
+                    return;
+                }
+                
+                // Check if user is ashfaqvishu@gmail.com
+                if (data.user.email === 'ashfaqvishu@gmail.com') {
+                    // Force update the admin status
+                    updateAdminStatus();
+                } else {
+                    showMessage('error', 'You do not have permission to access the admin panel. Only authorized administrators can access this area.');
+                    loadingSpinner.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Auth check error:', error);
+                showMessage('error', 'An error occurred while checking your authentication. Please try again later.');
+                loadingSpinner.style.display = 'none';
+            });
+            
+            // Function to update admin status
+            function updateAdminStatus() {
+                showMessage('info', 'Setting up your admin access...');
+                
+                fetch('/api/admin/force-update', {
+                    method: 'GET',
+                    credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showMessage('success', 'Your admin access has been verified! You can now access the dashboard.');
+                        loadingSpinner.style.display = 'none';
+                        actionsDiv.style.display = 'block';
+                        
+                        // Add dashboard link to navbar
+                        window.parent.postMessage({ type: 'refreshAdminStatus' }, '*');
+                    } else {
+                        showMessage('error', data.message || 'Failed to update admin status.');
+                        loadingSpinner.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Update error:', error);
+                    showMessage('error', 'An error occurred while updating your admin status. Please try again later.');
+                    loadingSpinner.style.display = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

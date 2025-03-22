@@ -1,0 +1,33 @@
+/* Admin Dashboard Link */
+.admin-link {
+    background-color: #f1c40f;
+    color: #333 !important;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.admin-link:hover {
+    background-color: #f39c12;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-link i {
+    margin-right: 5px;
+}
+
+/* Admin Dashboard Badge */
+.admin-badge {
+    display: inline-block;
+    background-color: #e74c3c;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    position: relative;
+    top: -1px;
+    margin-left: 5px;
+} 

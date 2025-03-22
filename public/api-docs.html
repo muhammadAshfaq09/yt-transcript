@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - YouTube Transcript Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube Icon">
+            <div class="logo-text">YT<span>Transcript</span></div>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/#converter">Converter</a></li>
+            <li><a href="/#how-it-works">How it Works</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+        </ul>
+        
+        <div class="auth-buttons">
+            <!-- Auth buttons will be dynamically inserted here by JS -->
+        </div>
+        
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <div class="api-docs-page">
+        <aside class="api-sidebar">
+            <div class="api-menu">
+                <h3>API Reference</h3>
+                <ul>
+                    <li><a href="#introduction" class="active">Introduction</a></li>
+                    <li><a href="#authentication">Authentication</a></li>
+                    <li><a href="#rate-limits">Rate Limits</a></li>
+                    <li><a href="#endpoints">Endpoints</a>
+                        <ul class="submenu">
+                            <li><a href="#transcript-endpoint">Transcript Endpoint</a></li>
+                            <li><a href="#video-info-endpoint">Video Info Endpoint</a></li>
+                            <li><a href="#user-endpoints">User Endpoints</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#errors">Error Handling</a></li>
+                    <li><a href="#libraries">Client Libraries</a></li>
+                    <li><a href="#examples">Code Examples</a></li>
+                </ul>
+            </div>
+            
+            <div class="api-contact">
+                <h4>Need help with integration?</h4>
+                <a href="/contact.html" class="api-contact-button">Contact Developer Support</a>
+            </div>
+        </aside>
+        
+        <main class="api-content">
+            <section id="introduction" class="api-section">
+                <h1>YouTube Transcript Converter API</h1>
+                <p class="api-version">API Version: 1.0.0</p>
+                
+                <div class="api-intro">
+                    <p>Welcome to the YouTube Transcript Converter API documentation. Our API allows you to programmatically convert YouTube videos to text transcripts, helping you integrate this functionality into your own applications.</p>
+                    
+                    <div class="api-card">
+                        <h3>Base URL</h3>
+                        <div class="code-block">
+                            <code>https://api.yttranscript.com/v1</code>
+                        </div>
+                        <p>For testing purposes, you can also use our development endpoint:</p>
+                        <div class="code-block">
+                            <code>https://dev.yttranscript.com/v1</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="api-callout primary">
+                    <h3>Getting Started</h3>
+                    <p>To use our API, you'll need to:</p>
+                    <ol>
+                        <li>Sign up for an account and subscribe to a plan that includes API access (Pro or Business plan)</li>
+                        <li>Generate an API key from your account dashboard</li>
+                        <li>Include your API key in the request headers as shown in the Authentication section</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="authentication" class="api-section">
+                <h2>Authentication</h2>
+                <p>All API requests require authentication using an API key. Include your API key in the <code>X-API-Key</code> header with each request.</p>
+                
+                <div class="code-example">
+                    <div class="code-lang-tabs">
+                        <button class="code-lang-tab active" data-lang="curl">cURL</button>
+                        <button class="code-lang-tab" data-lang="js">JavaScript</button>
+                        <button class="code-lang-tab" data-lang="python">Python</button>
+                    </div>
+                    
+                    <div class="code-lang-content active" data-lang="curl">
+                        <pre><code>curl --request GET \
+  --url https://api.yttranscript.com/v1/transcript/VIDEO_ID \
+  --header 'X-API-Key: your_api_key'</code></pre>
+                    </div>
+                    
+                    <div class="code-lang-content" data-lang="js">
+                        <pre><code>const options = {
+  method: 'GET',
+  headers: {
+    'X-API-Key': 'your_api_key'
+  }
+};
+
+fetch('https://api.yttranscript.com/v1/transcript/VIDEO_ID', options)
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));</code></pre>
+                    </div>
+                    
+                    <div class="code-lang-content" data-lang="python">
+                        <pre><code>import requests
+
+headers = {
+    'X-API-Key': 'your_api_key'
+}
+
+response = requests.get('https://api.yttranscript.com/v1/transcript/VIDEO_ID', headers=headers)
+data = response.json()
+print(data)</code></pre>
+                    </div>
+                </div>
+                
+                <div class="api-callout warning">
+                    <h3>Important</h3>
+                    <p>Keep your API key secure and do not share it publicly. If your API key is compromised, you can generate a new one from your account dashboard and invalidate the old one.</p>
+                </div>
+            </section>
+            
+            <section id="rate-limits" class="api-section">
+                <h2>Rate Limits</h2>
+                <p>To ensure service stability, we enforce rate limits on API requests:</p>
+                
+                <div class="api-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Plan</th>
+                                <th>Rate Limit</th>
+                                <th>Daily Limit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pro</td>
+                                <td>60 requests per minute</td>
+                                <td>1,000 requests per day</td>
+                            </tr>
+                            <tr>
+                                <td>Business</td>
+                                <td>300 requests per minute</td>
+                                <td>10,000 requests per day</td>
+                            </tr>
+                            <tr>
+                                <td>Enterprise</td>
+                                <td>Custom</td>
+                                <td>Custom</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <p>Rate limit information is included in the response headers:</p>
+                <ul>
+                    <li><code>X-RateLimit-Limit</code>: Maximum requests per minute</li>
+                    <li><code>X-RateLimit-Remaining</code>: Remaining requests in the current window</li>
+                    <li><code>X-RateLimit-Reset</code>: Time in seconds until the rate limit resets</li>
+                </ul>
+                
+                <div class="api-callout info">
+                    <h3>Note</h3>
+                    <p>If you need higher rate limits, please contact our sales team for Enterprise pricing options.</p>
+                </div>
+            </section>
+            
+            <section id="endpoints" class="api-section">
+                <h2>Endpoints</h2>
+                
+                <div id="transcript-endpoint" class="api-endpoint">
+                    <h3>Get Transcript</h3>
+                    <div class="endpoint-path">
+                        <span class="method">GET</span>
+                        <code>/transcript/{videoId}</code>
+                    </div>
+                    
+                    <p>Retrieves the transcript for a YouTube video.</p>
+                    
+                    <h4>Path Parameters</h4>
+                    <div class="api-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>videoId</td>
+                                    <td>string</td>
+                                    <td>The YouTube video ID (e.g., dQw4w9WgXcQ)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h4>Query Parameters</h4>
+                    <div class="api-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>language</td>
+                                    <td>string</td>
+                                    <td>null</td>
+                                    <td>Optional. Language code (e.g., en, es, fr). If not provided, uses the video's default language.</td>
+                                </tr>
+                                <tr>
+                                    <td>format</td>
+                                    <td>string</td>
+                                    <td>text</td>
+                                    <td>Optional. Output format: text, json, srt, or vtt</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h4>Response</h4>
+                    <div class="code-block">
+                        <pre><code>{
+  "success": true,
+  "transcript": "[00:00] First line of transcript\n[00:05] Second line of transcript...",
+  "metadata": {
+    "videoId": "dQw4w9WgXcQ",
+    "title": "Video Title",
+    "language": "en",
+    "duration": 213
+  }
+}</code></pre>
+                    </div>
+                    
+                    <h4>Example Request</h4>
+                    <div class="code-block">
+                        <pre><code>GET https://api.yttranscript.com/v1/transcript/dQw4w9WgXcQ?format=json</code></pre>
+                    </div>
+                </div>
+                
+                <div id="video-info-endpoint" class="api-endpoint">
+                    <h3>Get Video Information</h3>
+                    <div class="endpoint-path">
+                        <span class="method">GET</span>
+                        <code>/video-info/{videoId}</code>
+                    </div>
+                    
+                    <p>Retrieves metadata about a YouTube video.</p>
+                    
+                    <h4>Path Parameters</h4>
+                    <div class="api-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>videoId</td>
+                                    <td>string</td>
+                                    <td>The YouTube video ID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h4>Response</h4>
+                    <div class="code-block">
+                        <pre><code>{
+  "success": true,
+  "title": "Video Title",
+  "author": "Channel Name",
+  "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div id="user-endpoints" class="api-endpoint">
+                    <h3>User History Endpoints</h3>
+                    <p>These endpoints allow you to manage a user's transcript history.</p>
+                    
+                    <div class="endpoint-path">
+                        <span class="method">GET</span>
+                        <code>/history</code>
+                    </div>
+                    <p>Retrieves the user's transcript history.</p>
+                    
+                    <div class="endpoint-path">
+                        <span class="method">POST</span>
+                        <code>/history/add</code>
+                    </div>
+                    <p>Adds a video to the user's transcript history.</p>
+                    
+                    <h4>Request Body</h4>
+                    <div class="code-block">
+                        <pre><code>{
+  "videoId": "dQw4w9WgXcQ",
+  "videoTitle": "Video Title"
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="errors" class="api-section">
+                <h2>Error Handling</h2>
+                <p>The API uses standard HTTP status codes to indicate the success or failure of a request. In case of an error, the response body will include a descriptive message.</p>
+                
+                <div class="api-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status Code</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>200 OK</td>
+                                <td>The request was successful</td>
+                            </tr>
+                            <tr>
+                                <td>400 Bad Request</td>
+                                <td>The request was invalid or malformed</td>
+                            </tr>
+                            <tr>
+                                <td>401 Unauthorized</td>
+                                <td>API key is missing or invalid</td>
+                            </tr>
+                            <tr>
+                                <td>403 Forbidden</td>
+                                <td>The API key doesn't have permission for the requested operation</td>
+                            </tr>
+                            <tr>
+                                <td>404 Not Found</td>
+                                <td>The requested resource was not found</td>
+                            </tr>
+                            <tr>
+                                <td>429 Too Many Requests</td>
+                                <td>Rate limit exceeded</td>
+                            </tr>
+                            <tr>
+                                <td>500 Internal Server Error</td>
+                                <td>An error occurred on the server</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h4>Error Response Example</h4>
+                <div class="code-block">
+                    <pre><code>{
+  "success": false,
+  "message": "No transcript found for this video",
+  "error": "TRANSCRIPT_NOT_FOUND"
+}</code></pre>
+                </div>
+            </section>
+            
+            <section id="examples" class="api-section">
+                <h2>Code Examples</h2>
+                
+                <div class="code-example">
+                    <h3>Node.js Example</h3>
+                    <div class="code-block">
+                        <pre><code>const axios = require('axios');
+
+async function getTranscript(videoId) {
+  try {
+    const response = await axios.get(`https://api.yttranscript.com/v1/transcript/${videoId}`, {
+      headers: {
+        'X-API-Key': 'your_api_key'
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching transcript:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
+// Usage
+getTranscript('dQw4w9WgXcQ')
+  .then(data => console.log(data))
+  .catch(error => console.error('Failed to get transcript'));</code></pre>
+                    </div>
+                    
+                    <h3>Python Example</h3>
+                    <div class="code-block">
+                        <pre><code>import requests
+
+def get_transcript(video_id, api_key):
+    headers = {
+        'X-API-Key': api_key
+    }
+    
+    response = requests.get(f'https://api.yttranscript.com/v1/transcript/{video_id}', 
+                           headers=headers)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        return None
+
+# Usage
+api_key = 'your_api_key'
+result = get_transcript('dQw4w9WgXcQ', api_key)
+print(result)</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="libraries" class="api-section">
+                <h2>Client Libraries</h2>
+                <p>We provide official client libraries to make integration easier:</p>
+                
+                <div class="api-libraries">
+                    <div class="api-library-card">
+                        <h3>JavaScript</h3>
+                        <p>npm package for Node.js and browser applications</p>
+                        <div class="code-block">
+                            <code>npm install yttranscript-js</code>
+                        </div>
+                        <a href="#" class="library-link">View on GitHub</a>
+                    </div>
+                    
+                    <div class="api-library-card">
+                        <h3>Python</h3>
+                        <p>Python package for easy integration</p>
+                        <div class="code-block">
+                            <code>pip install yttranscript</code>
+                        </div>
+                        <a href="#" class="library-link">View on GitHub</a>
+                    </div>
+                    
+                    <div class="api-library-card">
+                        <h3>PHP</h3>
+                        <p>Composer package for PHP applications</p>
+                        <div class="code-block">
+                            <code>composer require yttranscript/yttranscript-php</code>
+                        </div>
+                        <a href="#" class="library-link">View on GitHub</a>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="api-feedback">
+                <h3>Was this documentation helpful?</h3>
+                <div class="feedback-buttons">
+                    <button class="feedback-button" id="helpful-yes">Yes</button>
+                    <button class="feedback-button" id="helpful-no">No</button>
+                </div>
+                <div class="feedback-form" style="display: none;">
+                    <textarea placeholder="Please tell us how we can improve our documentation"></textarea>
+                    <button class="submit-feedback">Submit Feedback</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <div class="logo-text">YT<span>Transcript</span></div>
+                    <p>Convert YouTube videos to text instantly.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/#converter">Converter</a></li>
+                            <li><a href="/#how-it-works">How it Works</a></li>
+                            <li><a href="/#pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="/#faq">FAQ</a></li>
+                            <li><a href="/help-center.html">Help Center</a></li>
+                            <li><a href="/contact.html">Contact Us</a></li>
+                            <li><a href="/api-docs.html">API Documentation</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                            <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                            <li><a href="#">GDPR Compliance</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 YTTranscript. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">Twitter</a>
+                    <a href="#" class="social-link">Facebook</a>
+                    <a href="#" class="social-link">LinkedIn</a>
+                    <a href="#" class="social-link">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Code language tabs functionality
+        document.querySelectorAll('.code-lang-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.code-lang-tab').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all content
+                document.querySelectorAll('.code-lang-content').forEach(content => content.classList.remove('active'));
+                // Show content for selected language
+                const lang = this.getAttribute('data-lang');
+                document.querySelector(`.code-lang-content[data-lang="${lang}"]`).classList.add('active');
+            });
+        });
+        
+        // API sidebar navigation
+        document.querySelectorAll('.api-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Remove active class from all links
+                document.querySelectorAll('.api-menu a').forEach(a => a.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+            });
+        });
+        
+        // Feedback buttons
+        document.getElementById('helpful-yes').addEventListener('click', function() {
+            alert('Thank you for your feedback!');
+        });
+        
+        document.getElementById('helpful-no').addEventListener('click', function() {
+            document.querySelector('.feedback-form').style.display = 'block';
+        });
+        
+        document.querySelector('.submit-feedback').addEventListener('click', function() {
+            const feedbackText = document.querySelector('.feedback-form textarea').value;
+            if (feedbackText.trim() !== '') {
+                alert('Thank you for your feedback! We\'ll use it to improve our documentation.');
+                document.querySelector('.feedback-form').style.display = 'none';
+                document.querySelector('.feedback-form textarea').value = '';
+            } else {
+                alert('Please provide some feedback before submitting.');
+            }
+        });
+    </script>
+</body>
+</html> 

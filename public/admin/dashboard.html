@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - YouTube Transcript Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Dashboard styles */
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .admin-logo {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-logo img {
+            width: 32px;
+            margin-right: 10px;
+        }
+        
+        .admin-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-menu a {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .admin-menu a:hover {
+            background-color: #34495e;
+        }
+        
+        .admin-menu a.active {
+            background-color: #3498db;
+        }
+        
+        .admin-content {
+            flex: 1;
+            padding: 20px 20px 20px 270px;
+            background-color: #f5f7fa;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-title {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            margin: 0;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .stat-icon.users {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .stat-icon.contacts {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .stat-icon.conversion {
+            background-color: #fff8e1;
+            color: #ff9800;
+        }
+        
+        .stat-icon.premium {
+            background-color: #f3e5f5;
+            color: #9c27b0;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .stat-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-right: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .stat-badge.up {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .stat-badge.down {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+        
+        .dashboard-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .section-action {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .contact-table, .user-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .contact-table th,
+        .contact-table td,
+        .user-table th,
+        .user-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .contact-table th,
+        .user-table th {
+            font-weight: 500;
+            color: #666;
+            background-color: #f8f9fa;
+        }
+        
+        .contact-table tr:last-child td,
+        .user-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .status-new {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+        
+        .status-in-progress {
+            background-color: #fff8e1;
+            color: #ffc107;
+        }
+        
+        .status-resolved {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .status-closed {
+            background-color: #f5f5f5;
+            color: #9e9e9e;
+        }
+        
+        .view-all {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-top: 15px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .view-all:hover {
+            background-color: #e9ecef;
+        }
+        
+        .chart-container {
+            height: 250px;
+            position: relative;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 70px;
+                padding: 15px 10px;
+                overflow: hidden;
+            }
+            
+            .admin-logo span {
+                display: none;
+            }
+            
+            .admin-menu a {
+                padding: 12px;
+                text-align: center;
+            }
+            
+            .admin-content {
+                padding-left: 90px;
+            }
+            
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-card {
+                margin-bottom: 15px;
+            }
+        }
+        
+        /* Add loading spinner */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="Logo">
+                <span>Admin Panel</span>
+            </div>
+            
+            <ul class="admin-menu">
+                <li><a href="/admin/dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="/admin/users.html">User Management</a></li>
+                <li><a href="/admin/contact-management.html">Contact Messages</a></li>
+                <li><a href="/admin/settings.html">Settings</a></li>
+                <li><a href="/" target="_blank">View Website</a></li>
+                <li><a href="#" id="logout-link">Logout</a></li>
+            </ul>
+        </aside>
+        
+        <main class="admin-content">
+            <header class="admin-header">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <div class="admin-user">
+                    <img src="https://via.placeholder.com/40" alt="Admin User">
+                    <span id="admin-name">Admin User</span>
+                </div>
+            </header>
+            
+            <!-- Dashboard Stats -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Total Users</h3>
+                        <div class="stat-icon users">👤</div>
+                    </div>
+                    <p class="stat-value" id="total-users">--</p>
+                    <div class="stat-info">
+                        <span class="stat-badge up" id="user-growth">+0%</span>
+                        <span>Since last month</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Contact Messages</h3>
+                        <div class="stat-icon contacts">📨</div>
+                    </div>
+                    <p class="stat-value" id="total-contacts">--</p>
+                    <div class="stat-info">
+                        <span class="stat-badge up" id="contact-growth">+0%</span>
+                        <span>Since last month</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Transcripts Generated</h3>
+                        <div class="stat-icon conversion">📝</div>
+                    </div>
+                    <p class="stat-value" id="total-conversions">--</p>
+                    <div class="stat-info">
+                        <span class="stat-badge up" id="conversion-growth">+0%</span>
+                        <span>Since last month</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Premium Users</h3>
+                        <div class="stat-icon premium">⭐</div>
+                    </div>
+                    <p class="stat-value" id="premium-users">--</p>
+                    <div class="stat-info">
+                        <span class="stat-badge up" id="premium-growth">+0%</span>
+                        <span>Since last month</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Contact Messages -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Contact Messages</h2>
+                    <a href="/admin/contact-management.html" class="section-action">View All</a>
+                </div>
+                
+                <table class="contact-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-contacts">
+                        <tr>
+                            <td colspan="4" style="text-align: center;">Loading recent contacts...</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <a href="/admin/contact-management.html" class="view-all">View All Contact Messages</a>
+            </div>
+            
+            <div class="grid-container">
+                <!-- Recent Users -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Users</h2>
+                        <a href="/admin/users.html" class="section-action">View All</a>
+                    </div>
+                    
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Joined</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-users">
+                            <tr>
+                                <td colspan="3" style="text-align: center;">Loading recent users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <a href="/admin/users.html" class="view-all">View All Users</a>
+                </div>
+                
+                <!-- User Activity -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">User Activity</h2>
+                        <select id="activity-timeframe">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container" id="activity-chart">
+                        <!-- Chart will be rendered here -->
+                        <p style="text-align: center; padding-top: 100px;">Loading activity chart...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Check for admin authorization first
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Admin dashboard loading...');
+            
+            // Display loading state immediately
+            showLoadingState();
+            
+            // Get current user
+            fetch('/api/auth/user', {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Cache-Control': 'no-cache'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Authentication error: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Auth data received:', data);
+                
+                if (!data.success || !data.user) {
+                    // Not logged in, redirect to login
+                    window.location.href = '/admin/login.html';
+                    return;
+                }
+                
+                // Check if user is the specific admin or has admin rights
+                if (!(data.user.isAdmin || data.user.email === 'ashfaqvishu@gmail.com')) {
+                    // Not an admin, show error and redirect
+                    alert('Access denied. Admin privileges required.');
+                    window.location.href = '/';
+                    return;
+                }
+                
+                // User is authorized, set admin name and load dashboard data
+                document.getElementById('admin-name').textContent = data.user.username || 'Admin';
+                
+                // Force admin status update for the specific email
+                if (data.user.email === 'ashfaqvishu@gmail.com') {
+                    fetch('/api/admin/force-update', {
+                        method: 'GET',
+                        credentials: 'include'
+                    })
+                    .then(response => response.json())
+                    .then(() => {
+                        // Load dashboard data after admin status is confirmed
+                        loadDashboardData();
+                    })
+                    .catch(error => {
+                        console.error('Error updating admin status:', error);
+                        loadDashboardData(); // Still try to load dashboard data
+                    });
+                } else {
+                    loadDashboardData();
+                }
+            })
+            .catch(error => {
+                console.error('Authorization check error:', error);
+                showErrorState('Authentication error: ' + error.message);
+            });
+            
+            // Set up event listeners
+            document.getElementById('logout-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                logout();
+            });
+            
+            document.getElementById('activity-timeframe').addEventListener('change', function() {
+                loadActivityChart(this.value);
+            });
+        });
+        
+        // Logout function
+        async function logout() {
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                window.location.href = '/admin/login.html';
+            } catch (error) {
+                console.error('Error logging out:', error);
+                alert('Error logging out. Please try again.');
+            }
+        }
+        
+        // Load all dashboard data
+        async function loadDashboardData() {
+            try {
+                console.log('Fetching dashboard data...');
+                // Show loading indicators for all sections
+                showLoadingState();
+                
+                const response = await fetch('/api/admin/dashboard', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+                
+                console.log('Dashboard response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                }
+                
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Server returned non-JSON response: ' + contentType);
+                }
+                
+                const data = await response.json();
+                console.log('Dashboard data received:', data);
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to load dashboard data');
+                }
+                
+                // Update stats
+                updateStats(data.stats);
+                
+                // Update tables
+                updateRecentContacts(data.recentContacts);
+                updateRecentUsers(data.recentUsers);
+                
+                // Load activity chart
+                loadActivityChart(30, data.userActivity);
+                
+                console.log('Dashboard data loaded successfully');
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showErrorState(error.message);
+                
+                // Add retry button
+                const retryButtons = document.querySelectorAll('.retry-button');
+                retryButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        loadDashboardData();
+                    });
+                });
+            }
+        }
+        
+        // Show loading indicators
+        function showLoadingState() {
+            document.getElementById('total-users').textContent = 'Loading...';
+            document.getElementById('total-contacts').textContent = 'Loading...';
+            document.getElementById('total-conversions').textContent = 'Loading...';
+            document.getElementById('premium-users').textContent = 'Loading...';
+            
+            document.getElementById('recent-contacts').innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 30px;">
+                        <div class="loading-spinner"></div>
+                        <p>Loading contact data...</p>
+                    </td>
+                </tr>
+            `;
+            
+            document.getElementById('recent-users').innerHTML = `
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 30px;">
+                        <div class="loading-spinner"></div>
+                        <p>Loading user data...</p>
+                    </td>
+                </tr>
+            `;
+            
+            document.getElementById('activity-chart').innerHTML = `
+                <div style="text-align: center; padding-top: 100px;">
+                    <div class="loading-spinner"></div>
+                    <p>Loading activity chart...</p>
+                </div>
+            `;
+        }
+        
+        // Show error state
+        function showErrorState(errorMessage) {
+            const errorHTML = `
+                <div style="text-align: center; color: #f44336; padding: 15px;">
+                    <p>⚠️ Failed to load data</p>
+                    <p style="font-size: 14px;">${errorMessage || 'Please refresh the page or try again later.'}</p>
+                    <button class="retry-button" style="margin-top: 10px; padding: 8px 15px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">Retry</button>
+                </div>
+            `;
+            
+            // Update stats with error
+            document.getElementById('total-users').innerHTML = '–';
+            document.getElementById('total-contacts').innerHTML = '–';
+            document.getElementById('total-conversions').innerHTML = '–';
+            document.getElementById('premium-users').innerHTML = '–';
+            
+            // Update tables with error
+            document.getElementById('recent-contacts').innerHTML = `
+                <tr>
+                    <td colspan="4">${errorHTML}</td>
+                </tr>
+            `;
+            
+            document.getElementById('recent-users').innerHTML = `
+                <tr>
+                    <td colspan="3">${errorHTML}</td>
+                </tr>
+            `;
+            
+            document.getElementById('activity-chart').innerHTML = errorHTML;
+        }
+        
+        // Update stats cards
+        function updateStats(stats) {
+            if (!stats) {
+                console.error('Stats data is missing or invalid');
+                return;
+            }
+            
+            console.log('Updating stats with data:', stats);
+            
+            // Update total users
+            document.getElementById('total-users').textContent = stats.totalUsers || 0;
+            document.getElementById('user-growth').textContent = formatGrowth(stats.userGrowth);
+            document.getElementById('user-growth').className = `stat-badge ${stats.userGrowth >= 0 ? 'up' : 'down'}`;
+            
+            // Update contact messages
+            document.getElementById('total-contacts').textContent = stats.totalContacts || 0;
+            document.getElementById('contact-growth').textContent = formatGrowth(stats.contactGrowth);
+            document.getElementById('contact-growth').className = `stat-badge ${stats.contactGrowth >= 0 ? 'up' : 'down'}`;
+            
+            // Update conversions
+            document.getElementById('total-conversions').textContent = stats.totalConversions || 0;
+            document.getElementById('conversion-growth').textContent = formatGrowth(stats.conversionGrowth);
+            document.getElementById('conversion-growth').className = `stat-badge ${stats.conversionGrowth >= 0 ? 'up' : 'down'}`;
+            
+            // Update premium users
+            document.getElementById('premium-users').textContent = stats.premiumUsers || 0;
+            document.getElementById('premium-growth').textContent = formatGrowth(stats.premiumGrowth);
+            document.getElementById('premium-growth').className = `stat-badge ${stats.premiumGrowth >= 0 ? 'up' : 'down'}`;
+        }
+        
+        // Format growth percentage
+        function formatGrowth(value) {
+            if (value === undefined || value === null) return '+0%';
+            
+            const sign = value >= 0 ? '+' : '';
+            return `${sign}${value}%`;
+        }
+        
+        // Update recent contacts table
+        function updateRecentContacts(contacts) {
+            const tbody = document.getElementById('recent-contacts');
+            
+            if (!contacts || contacts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 30px;">No recent contact messages found.</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            console.log('Updating contacts with data:', contacts.length + ' contacts');
+            
+            tbody.innerHTML = contacts.map(contact => `
+                <tr>
+                    <td>${formatDate(contact.createdAt)}</td>
+                    <td>${escapeHtml(contact.name || 'Unknown')}</td>
+                    <td>${formatSubject(contact.subject || 'General')}</td>
+                    <td>
+                        <span class="status-badge status-${contact.status || 'new'}">
+                            ${formatStatus(contact.status || 'new')}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Update recent users table
+        function updateRecentUsers(users) {
+            const tbody = document.getElementById('recent-users');
+            
+            if (!users || users.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 30px;">No recent users found.</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            console.log('Updating users with data:', users.length + ' users');
+            
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td>${escapeHtml(user.username || 'Unknown')}</td>
+                    <td>${formatDate(user.createdAt)}</td>
+                    <td>
+                        <span class="status-badge ${(user.status === 'active' || !user.status) ? 'status-resolved' : 'status-closed'}">
+                            ${(user.status === 'active' || !user.status) ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Load activity chart
+        function loadActivityChart(days, activityData) {
+            const chartContainer = document.getElementById('activity-chart');
+            
+            // If we need to fetch data
+            if (!activityData) {
+                chartContainer.innerHTML = '<div style="text-align: center; padding-top: 100px;"><div class="loading-spinner"></div><p>Loading activity chart...</p></div>';
+                
+                fetch(`/api/admin/user-activity?days=${days}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Activity data received:', data);
+                    
+                    if (!data.success) {
+                        throw new Error(data.message || 'Failed to load activity data');
+                    }
+                    
+                    console.log('Activity data loaded successfully');
+                    renderActivityChart(data.activity);
+                })
+                .catch(error => {
+                    console.error('Error loading activity data:', error);
+                    chartContainer.innerHTML = `
+                        <div style="text-align: center; color: #f44336; padding: 15px;">
+                            <p>⚠️ Failed to load activity chart</p>
+                            <p style="font-size: 14px;">${error.message}</p>
+                            <button onclick="loadActivityChart(${days})" style="margin-top: 10px; padding: 8px 15px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">Retry</button>
+                        </div>
+                    `;
+                });
+                
+                return;
+            }
+            
+            // Render with provided data
+            console.log('Rendering activity chart with existing data');
+            renderActivityChart(activityData);
+        }
+        
+        // Render activity chart
+        function renderActivityChart(activityData) {
+            if (!activityData || !activityData.dates || !activityData.newUsers || 
+                !activityData.logins || !activityData.transcripts) {
+                console.error('Invalid activity data format:', activityData);
+                return;
+            }
+            
+            console.log('Activity data:', {
+                dates: activityData.dates.length,
+                newUsers: activityData.newUsers.length,
+                logins: activityData.logins.length,
+                transcripts: activityData.transcripts.length
+            });
+            
+            const chartContainer = document.getElementById('activity-chart');
+            chartContainer.innerHTML = '<canvas id="activity-canvas"></canvas>';
+            
+            const ctx = document.getElementById('activity-canvas').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: activityData.dates,
+                    datasets: [
+                        {
+                            label: 'New Users',
+                            data: activityData.newUsers,
+                            borderColor: '#1976d2',
+                            backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Login Activity',
+                            data: activityData.logins,
+                            borderColor: '#4caf50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Transcripts',
+                            data: activityData.transcripts,
+                            borderColor: '#ff9800',
+                            backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Helper functions
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            
+            try {
+                const date = new Date(dateString);
+                
+                if (isNaN(date.getTime())) {
+                    return 'Invalid Date';
+                }
+                
+                return new Intl.DateTimeFormat('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                }).format(date);
+            } catch (e) {
+                console.error('Error formatting date:', e);
+                return 'Error';
+            }
+        }
+        
+        function formatSubject(subject) {
+            if (!subject) return 'N/A';
+            
+            const subjectMap = {
+                'general': 'General Inquiry',
+                'support': 'Technical Support',
+                'billing': 'Billing Question',
+                'feature': 'Feature Request',
+                'bug': 'Bug Report'
+            };
+            
+            return subjectMap[subject] || subject;
+        }
+        
+        function formatStatus(status) {
+            if (!status) return 'N/A';
+            
+            const statusMap = {
+                'new': 'New',
+                'in-progress': 'In Progress',
+                'resolved': 'Resolved',
+                'closed': 'Closed'
+            };
+            
+            return statusMap[status] || status;
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html> 

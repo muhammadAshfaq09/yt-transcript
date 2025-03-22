@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - YouTube Transcript Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .login-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .admin-logo {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .admin-logo img {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .admin-logo h1 {
+            font-size: 24px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .admin-logo p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .login-form {
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #34495e;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .login-button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Loading indicator */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="admin-logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="Admin Logo">
+            <h1>Admin Panel</h1>
+            <p>YouTube Transcript Converter</p>
+        </div>
+        
+        <form id="login-form" class="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" id="login-button" class="login-button">
+                Login
+            </button>
+            
+            <p id="error-message" class="error-message"></p>
+        </form>
+        
+        <a href="/" class="back-link">← Back to Website</a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            const messageDiv = document.getElementById('error-message');
+            
+            // Check if already logged in
+            fetch('/api/users/me', {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.user) {
+                    // Check if user is the specific admin or has admin rights
+                    if (data.user.isAdmin || data.user.email === 'ashfaqvishu@gmail.com') {
+                        // Already logged in as admin, redirect to dashboard
+                        window.location.href = '/admin/dashboard.html';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Auth check error:', error);
+            });
+            
+            // Handle login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Reset message
+                messageDiv.textContent = '';
+                messageDiv.className = 'error-message';
+                messageDiv.style.display = 'none';
+                
+                // Disable submit button and show loading state
+                const submitButton = document.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="loading"></span> Logging in...';
+                
+                // Attempt login
+                fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password }),
+                    credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Check if user is the specific admin email
+                        if (email === 'ashfaqvishu@gmail.com') {
+                            // Login successful and is the specified admin
+                            showMessage('success', 'Login successful! Redirecting to dashboard...');
+                            
+                            // Redirect to admin dashboard
+                            setTimeout(() => {
+                                window.location.href = '/admin/dashboard.html';
+                            }, 1000);
+                        } else if (data.user && data.user.isAdmin) {
+                            // Another admin user
+                            showMessage('success', 'Login successful! Redirecting to dashboard...');
+                            
+                            // Redirect to admin dashboard
+                            setTimeout(() => {
+                                window.location.href = '/admin/dashboard.html';
+                            }, 1000);
+                        } else {
+                            // Not an admin
+                            showMessage('error', 'Access denied. Admin privileges required.');
+                            resetButton();
+                        }
+                    } else {
+                        // Login failed
+                        showMessage('error', data.message || 'Login failed');
+                        resetButton();
+                    }
+                })
+                .catch(error => {
+                    console.error('Login error:', error);
+                    showMessage('error', 'An error occurred. Please try again.');
+                    resetButton();
+                });
+            });
+            
+            // Function to show messages
+            function showMessage(type, text) {
+                messageDiv.textContent = text;
+                messageDiv.className = `error-message ${type}`;
+                messageDiv.style.display = 'block';
+            }
+            
+            // Reset button state
+            function resetButton() {
+                const submitButton = document.querySelector('button[type="submit"]');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Login';
+            }
+        });
+    </script>
+</body>
+</html> 
